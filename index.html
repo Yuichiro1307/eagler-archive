@@ -39,16 +39,18 @@
   <script>
     (async () => {
       try {
-        // a.html を取得している間は Fetching.... を表示
+        // e112u3.html を取得
         const response = await fetch("./e112u3.html");
 
         if (!response.ok) {
-          throw new Error(`e112.html の読み込みに失敗しました: ${response.status}`);
+          throw new Error(
+            `e112u3.html の読み込みに失敗しました: ${response.status}`
+          );
         }
 
         const html = await response.text();
 
-        // about:blank を新しいタブ/ウィンドウで開く
+        // 新しい about:blank を開く
         const newWindow = window.open("about:blank", "_blank");
 
         if (!newWindow) {
@@ -57,16 +59,23 @@
           );
         }
 
-        // a.html の内容を about:blank に埋め込む
+        // about:blank に e112u3.html の内容を埋め込む
         newWindow.document.open();
         newWindow.document.write(html);
         newWindow.document.close();
 
+        // 元の index.html を閉じる
+        window.close();
+
+        // window.close() がブラウザに拒否された場合の対策
+        setTimeout(() => {
+          location.replace("about:blank");
+        }, 100);
+
       } catch (error) {
         console.error(error);
 
-        document.getElementById("loading").textContent =
-          "Fetch failed.";
+        document.getElementById("loading").textContent = "Fetch failed.";
       }
     })();
   </script>
